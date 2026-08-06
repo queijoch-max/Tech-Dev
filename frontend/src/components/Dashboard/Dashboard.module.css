@@ -1,0 +1,57 @@
+.dashboard {
+    padding: 2rem;
+    color: var(--text-primary);
+}
+
+.dashboard h1 {
+    margin: 0 0 2rem;
+    font-size: 2rem;
+}
+
+.summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.card {
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.label {
+    display: block;
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.card strong {
+    display: block;
+    font-size: 2rem;
+    color: var(--text-primary);
+}
+
+.card p {
+    margin: 0.75rem 0 0;
+    color: var(--text-secondary);
+}
+
+.calendar {
+    margin-top: 2rem;
+}
+
+.calendar h2 {
+    margin-bottom: 1rem;
+}
+
+.calendarPlaceholder {
+    min-height: 300px;
+    padding: 2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-secondary);
+}

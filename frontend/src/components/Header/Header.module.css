@@ -1,0 +1,30 @@
+.header {
+    height: 110px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 2rem;
+    background: #141412;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+}
+
+.brandText h1 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+.brandText p {
+    margin: 0.35rem 0 0;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+}

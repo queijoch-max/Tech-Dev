@@ -1,0 +1,21 @@
+import Header from "../Header/Header";
+import Sidebar from "../Sidebar/Sidebar";
+import styles from "./Layout.module.css";
+
+function Layout({ children }) {
+    return (
+        <div className={styles.layout}>
+            <Header />
+
+            <div className={styles.body}>
+                <Sidebar />
+
+                <main className={styles.content}>
+                    {children}
+                </main>
+            </div>
+        </div>
+    );
+}
+
+export default Layout;

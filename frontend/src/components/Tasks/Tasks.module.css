@@ -1,0 +1,161 @@
+.tasks {
+    padding: 2rem;
+}
+
+.taskTables {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.taskList {
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 23, 68, 0.25);
+    transition: 0.2s ease;
+}
+
+.taskList:hover {
+    border-color: var(--accent-red);
+    box-shadow: 0 0 15px rgba(255, 23, 68, 0.3);
+}
+
+.taskListItems {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.taskItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.taskItem input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--accent-red);
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s ease;
+}
+
+.taskItem input[type="checkbox"]:checked {
+    background: var(--accent-red);
+    box-shadow: 0 0 8px rgba(255, 23, 68, 0.5);
+}
+
+.taskItem input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* ==============================
+   INPUT DE MODIFICATION
+   ============================== */
+
+.taskItem input[type="text"] {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+.taskItem span {
+    transition: 0.2s ease;
+}
+
+.taskItem.completed span {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.addTask {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.addTask input {
+    flex: 1;
+    padding: 0.7rem 0.9rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.addTask input::placeholder {
+    color: var(--text-secondary);
+}
+
+.addTask input:focus {
+    border-color: var(--accent-red);
+    box-shadow: 0 0 8px rgba(255, 23, 68, 0.2);
+}
+
+.addTask button {
+    padding: 0.7rem 1.1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.addTask button:hover {
+    color: var(--accent-red);
+    border-color: var(--accent-red);
+    background: var(--bg-card);
+    box-shadow: 0 0 10px rgba(255, 23, 68, 0.25);
+}
+
+.taskItem button {
+    margin-left: auto;
+    padding: 0.4rem 0.7rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.taskItem button:hover {
+    color: var(--accent-red);
+    border-color: var(--accent-red);
+    background: var(--bg-card);
+    box-shadow: 0 0 8px rgba(255, 23, 68, 0.2);
+}
+
+.tasks h1 {
+    margin: 0 0 1.5rem;
+
+    text-align: center;
+
+    color: #ff6a3d;
+
+    text-shadow:
+        0 0 6px rgba(255, 23, 68, 0.35);
+}

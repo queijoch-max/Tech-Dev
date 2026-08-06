@@ -1,0 +1,17 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend API for my personal Hub Dashboard",
+  "license": "ISC",
+  "author": "Charlotte",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node --env-file=.env src/server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}

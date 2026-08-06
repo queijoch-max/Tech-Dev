@@ -1,0 +1,405 @@
+.projects {
+    width: 100%;
+    padding: 2rem;
+}
+.pageTitle {
+    margin: 0 0 1.5rem;
+
+    text-align: center;
+
+    color: #ff6a3d;
+
+    text-shadow:
+        0 0 6px rgba(255, 23, 68, 0.35);
+}
+/* ==============================
+   TABLEAU KANBAN
+   ============================== */
+
+.generalProjects {
+    margin-bottom: 3rem;
+}
+
+.generalProjects h2,
+.projectManagement h2 {
+    margin-bottom: 1.5rem;
+}
+
+.kanban {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.kanbanColumn {
+    min-height: 400px;
+    padding: 1rem;
+
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    box-shadow: 0 0 15px rgba(255, 23, 68, 0.25);
+
+    transition: 0.2s ease;
+}
+
+.kanbanColumn:hover {
+    border-color: var(--accent-red);
+    box-shadow: 0 0 15px rgba(255, 23, 68, 0.3);
+}
+
+/* ==============================
+   EN-TÊTE COLONNE
+   ============================== */
+
+.columnHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 1rem;
+}
+
+.columnHeader h3 {
+    margin: 0;
+
+    color: #ff6a3d;
+
+    text-shadow:
+        0 0 6px rgba(255, 23, 68, 0.45),
+        0 0 14px rgba(255, 23, 68, 0.2);
+}
+
+.columnHeader span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+
+    border-radius: 50%;
+
+    background: var(--accent-red);
+
+    font-size: 0.8rem;
+}
+
+/* ==============================
+   CARTES PROJETS
+   ============================== */
+
+.projectCards {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.75rem;
+
+    margin-top: 1rem;
+}
+
+.projectCard {
+    padding: 1rem;
+
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    box-shadow: 0 0 15px rgba(255, 23, 68, 0.25);
+
+    cursor: grab;
+
+    transition: 0.2s ease;
+}
+
+.projectCard:hover {
+    border-color: var(--accent-red);
+
+    box-shadow:
+        0 0 15px rgba(255, 23, 68, 0.3);
+}
+
+.projectCard:active {
+    cursor: grabbing;
+}
+
+/* ==============================
+   TITRE PROJET
+   ============================== */
+
+.projectCard h4 {
+    margin: 0 0 0.6rem;
+
+    color: #ff6a3d;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    text-shadow:
+        0 0 6px rgba(255, 23, 68, 0.45);
+}
+
+/* ==============================
+   DESCRIPTION
+   ============================== */
+
+.projectCard p {
+    margin: 0 0 0.9rem;
+
+    color: var(--text-secondary);
+
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* ==============================
+   PROGRESSION
+   ============================== */
+
+.projectProgress {
+    margin-top: 0.75rem;
+}
+
+.projectProgress span {
+    opacity: 0.6;
+
+    font-size: 0.8rem;
+
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.progressRed {
+    color: #ff1744;
+
+    text-shadow:
+        0 0 8px rgba(255, 23, 68, 0.7);
+}
+
+.progressOrange {
+    color: #ff7a00;
+
+    text-shadow:
+        0 0 8px rgba(255, 122, 0, 0.7);
+}
+
+.progressYellow {
+    color: #ffd600;
+
+    text-shadow:
+        0 0 8px rgba(255, 214, 0, 0.7);
+}
+
+.progressGreen {
+    color: #00e676;
+
+    text-shadow:
+        0 0 8px rgba(0, 230, 118, 0.7);
+}
+
+/* ==============================
+   DEADLINE
+   ============================== */
+
+.projectCard small {
+    display: block;
+
+    margin-top: 0.75rem;
+
+    color: var(--text-secondary);
+
+    font-size: 0.75rem;
+}
+
+/* ==============================
+   TABLEAU GESTION DES PROJETS
+   ============================== */
+
+.projectManagement {
+    margin-top: 3rem;
+}
+
+.projectsTable {
+    width: 100%;
+    overflow-x: auto;
+
+    background: var(--bg-secondary);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    box-shadow: 0 0 15px rgba(255, 23, 68, 0.25);
+
+    transition: 0.2s ease;
+}
+
+.projectsTable:hover {
+    border-color: var(--accent-red);
+
+    box-shadow:
+        0 0 15px rgba(255, 23, 68, 0.3);
+}
+
+/* ==============================
+   STRUCTURE DU TABLEAU
+   ============================== */
+
+.tableHeader,
+.tableRow {
+    display: grid;
+
+    grid-template-columns:
+        1.3fr
+        2fr
+        1.2fr
+        1fr
+        1.2fr;
+
+    gap: 1rem;
+
+    align-items: center;
+}
+
+.tableHeader {
+    padding: 1rem 1.25rem;
+
+    background: rgba(255, 255, 255, 0.03);
+
+    border-bottom: 1px solid var(--border);
+
+    color: #ff6a3d;
+
+    font-size: 0.8rem;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    text-shadow:
+        0 0 6px rgba(255, 23, 68, 0.35);
+}
+
+.tableRow {
+    padding: 0.9rem 1.25rem;
+
+    border-bottom: 1px solid var(--border);
+
+    transition: 0.2s ease;
+}
+
+.tableRow:last-child {
+    border-bottom: none;
+}
+
+.tableRow:hover {
+    background: var(--bg-card);
+}
+
+/* ==============================
+   CHAMPS
+   ============================== */
+
+.tableRow input,
+.tableRow select {
+    width: 100%;
+    min-width: 0;
+
+    padding: 0.65rem 0.75rem;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: var(--text-primary);
+
+    font: inherit;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+.tableRow input:hover,
+.tableRow select:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.tableRow input:focus,
+.tableRow select:focus {
+    background: rgba(255, 255, 255, 0.06);
+
+    border-color: var(--accent-red);
+
+    box-shadow:
+        0 0 8px rgba(255, 23, 68, 0.2);
+}
+
+/* ==============================
+   SELECT
+   ============================== */
+
+.tableRow select {
+    cursor: pointer;
+}
+
+/* ==============================
+   PROGRESSION TABLEAU
+   ============================== */
+
+.tableRow input[type="number"] {
+    text-align: center;
+}
+
+/* ==============================
+   DATE
+   ============================== */
+
+.tableRow input[type="date"] {
+    cursor: pointer;
+}
+
+/* ==============================
+   COULEUR PROGRESSION - TABLEAU
+   ============================== */
+
+.tableRow input.progressRed {
+    color: #ff1744;
+    text-shadow: 0 0 8px rgba(255, 23, 68, 0.7);
+}
+
+.tableRow input.progressOrange {
+    color: #ff7a00;
+    text-shadow: 0 0 8px rgba(255, 122, 0, 0.7);
+}
+
+.tableRow input.progressYellow {
+    color: #ffd600;
+    text-shadow: 0 0 8px rgba(255, 214, 0, 0.7);
+}
+
+.tableRow input.progressGreen {
+    color: #00e676;
+    text-shadow: 0 0 8px rgba(0, 230, 118, 0.7);
+}
+
+/* ==============================
+   TITRE PAGE
+   ============================== */
+
+.projectsPage {
+    width: 100%;
+    padding: 2rem;
+}
+
+.projectsPage h1 {
+    margin: 0 0 1.5rem;
+
+    text-align: center;
+
+    color: #ff6a3d;
+
+    text-shadow:
+        0 0 6px rgba(255, 23, 68, 0.35);
+}
