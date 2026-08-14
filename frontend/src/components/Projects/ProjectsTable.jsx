@@ -40,6 +40,13 @@ function ProjectsTable({
         setNewProject("");
     };
 
+    const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        addProject();
+    }
+};
+
     // ==============================
     // SUPPRIMER UN PROJET
     // ==============================
@@ -211,6 +218,7 @@ function ProjectsTable({
                     placeholder="Nom du projet"
                     value={newProject}
                     onChange={(event) => setNewProject(event.target.value)}
+                    onKeyDown={handleKeyDown}
                 />
                 <button type="button" onClick={addProject}>
                     Ajouter
