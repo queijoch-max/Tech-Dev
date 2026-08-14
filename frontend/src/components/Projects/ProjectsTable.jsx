@@ -7,35 +7,67 @@ import styles from "./Projects.module.css";
 
 function ProjectsTable({
     projects = [],
+    onAddProject,
+    onDeleteProject,
     onUpdateProject
 }) {
 
+    // ==============================
+    // ÉTAT
+    // ==============================
 
-const [sortBy, setSortBy] = useState("");
-const sortedProjects = [...projects].sort((a, b) => {
-    if (!sortBy) return 0;
-    return a[sortBy].localeCompare(b[sortBy]);
-});
+    const [newProject, setNewProject] = useState("");
+
+    const [sortBy, setSortBy] = useState("");
+    const sortedProjects = [...projects].sort((a, b) => {
+        if (!sortBy) return 0;
+        return a[sortBy].localeCompare(b[sortBy]);
+    });
+
+    // ==============================
+    // AJOUTER UN PROJET
+    // ==============================
+
+    const addProject = () => {
+
+        const name = newProject.trim();
+        const description = "";
+        const status = "not_started";
+        const progress = 0;
+        const deadline = "";
+
+        onAddProject(name, description, status, progress, deadline);
+        setNewProject("");
+    };
+
+    // ==============================
+    // SUPPRIMER UN PROJET
+    // ==============================
+
+    const deleteProject = (projectId) => {
+        onDeleteProject(projectId);
+    };
 
     return (
         <div className={styles.projectsTable}>
 
-{/* ==============================
+            {/* ==============================
                 TRIER LES PROJETS
                 ============================== */}
 
-<div className={styles.sortBar}>
-    <select
-        className={styles.sortSelect}
-        value={sortBy}
-        onChange={(e) => setSortBy(e.target.value)}
-    >
-        <option value="">Trier par...</option>
-        <option value="name">Nom</option>
-        <option value="status">Statut</option>
-        <option value="deadline">Deadline</option>
-    </select>
-</div>
+            <div className={styles.sortBar}>
+                <select
+                    className={styles.sortSelect}
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                >
+                    <option value="">Trier par...</option>
+                    <option value="name">Nom</option>
+                    <option value="status">Statut</option>
+                    <option value="deadline">Deadline</option>
+                </select>
+            </div>
+
             {/* ==============================
                 EN-TÊTE
                 ============================== */}
@@ -47,6 +79,7 @@ const sortedProjects = [...projects].sort((a, b) => {
                 <span>Statuts</span>
                 <span>Progression</span>
                 <span>Deadline</span>
+                <span></span>
 
             </div>
 
@@ -118,28 +151,28 @@ const sortedProjects = [...projects].sort((a, b) => {
 
                     {/* PROGRESSION */}
 
-<input
-    type="number"
-    min="0"
-    max="100"
-    value={project.progress}
-    className={
-        project.progress <= 30
-            ? styles.progressRed
-            : project.progress <= 60
-                ? styles.progressOrange
-                : project.progress <= 90
-                    ? styles.progressYellow
-                    : styles.progressGreen
-    }
-    onChange={(event) =>
-        onUpdateProject(
-            project.id,
-            "progress",
-            Number(event.target.value)
-        )
-    }
-/>
+                    <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={project.progress}
+                        className={
+                            project.progress <= 30
+                                ? styles.progressRed
+                                : project.progress <= 60
+                                    ? styles.progressOrange
+                                    : project.progress <= 90
+                                        ? styles.progressYellow
+                                        : styles.progressGreen
+                        }
+                        onChange={(event) =>
+                            onUpdateProject(
+                                project.id,
+                                "progress",
+                                Number(event.target.value)
+                            )
+                        }
+                    />
 
                     {/* DEADLINE */}
 
@@ -155,9 +188,34 @@ const sortedProjects = [...projects].sort((a, b) => {
                         }
                     />
 
+                    {/* SUPPRIMER */}
+
+                    <button
+                        type="button"
+                        onClick={() => deleteProject(project.id)}
+                    >
+                        Supprimer
+                    </button>
+
                 </div>
 
             ))}
+
+            {/* ==============================
+                AJOUT D'UN PROJET
+                ============================== */}
+
+            <div className={styles.addProject}>
+                <input
+                    type="text"
+                    placeholder="Nom du projet"
+                    value={newProject}
+                    onChange={(event) => setNewProject(event.target.value)}
+                />
+                <button type="button" onClick={addProject}>
+                    Ajouter
+                </button>
+            </div>
 
         </div>
     );

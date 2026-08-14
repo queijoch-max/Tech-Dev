@@ -60,6 +60,130 @@ setTasksToday(todayTasks);
 
     }, []);
 
+    // ==============================
+    // PROJETS EN COURS
+    // ==============================
+
+    const [ongoingProjects, setOngoingProjects] = useState([]);
+
+    // ==============================
+    // RÉCUPÉRER LES PROJETS EN COURS
+    // ==============================
+
+    useEffect(() => {
+
+        const fetchOngoingProjects = async () => {
+
+            try {
+
+                const response = await fetch(
+                    `${API_URL}/projects`
+                );
+
+                if (!response.ok) {
+                    console.error(
+                        "Erreur lors de la récupération des projets en cours :",
+                        response.status
+                    );
+                    return;
+                }
+
+                const data = await response.json();
+
+        const ongoingProjects = data.projects.filter(
+            (project) =>
+                 project.status === "in_progress"
+);
+
+                setOngoingProjects(ongoingProjects);
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur réseau lors de la récupération des projets en cours :",
+                    error
+                );
+            }
+        };
+
+        fetchOngoingProjects();
+
+    }, []);
+
+    // ==============================
+    // METEO
+    // ==============================
+
+    const [weather, setWeather] = useState(null);
+
+    useEffect(() => {
+
+    const fetchWeather = async () => {
+
+        try {
+
+           const response = await fetch(
+    "https://api.open-meteo.com/v1/forecast?latitude=45.316&longitude=4.729&current_weather=true"
+);
+
+            if (!response.ok) {
+                console.error("Erreur météo :", response.status);
+                return;
+            }
+
+            const data = await response.json();
+
+            setWeather(data.current_weather);
+
+        } catch (error) {
+            console.error("Erreur réseau météo :", error);
+        }
+    };
+
+    fetchWeather();
+
+}, []);
+
+const weatherCodes = {
+    0: { emoji: "☀️", label: "Ciel dégagé" },
+    1: { emoji: "🌤️", label: "Plutôt dégagé" },
+    2: { emoji: "⛅", label: "Partiellement nuageux" },
+    3: { emoji: "☁️", label: "Couvert" },
+    45: { emoji: "🌫️", label: "Brouillard" },
+    48: { emoji: "🌫️", label: "Brouillard givrant" },
+    51: { emoji: "🌦️", label: "Bruine légère" },
+    61: { emoji: "🌧️", label: "Pluie légère" },
+    63: { emoji: "🌧️", label: "Pluie modérée" },
+    65: { emoji: "🌧️", label: "Pluie forte" },
+    71: { emoji: "🌨️", label: "Neige légère" },
+    80: { emoji: "🌦️", label: "Averses" },
+    95: { emoji: "⛈️", label: "Orage" }
+};
+
+const getWeatherTip = (weatherCode, temperature) => {
+
+    const isStorm = weatherCode >= 95;
+    const isRain = [51, 53, 55, 61, 63, 65, 80, 81, 82].includes(weatherCode);
+
+    if (isStorm) {
+        return "Fais gaffe à tes équipements !";
+    }
+
+    if (isRain) {
+        return "Tu as une bonne excuse pour pas sortir !";
+    }
+
+    if (temperature > 25) {
+        return "Pense à refroidir tes équipements";
+    }
+
+    if (temperature < 15) {
+        return "Raison pour rester près de la chaleur de ton ordi !";
+    }
+
+    return "Profites-en pour sortir un peu de ta grotte, ta tête a besoin de respirer";
+};
+
     return (
         <main className={styles.dashboard}>
 
@@ -90,26 +214,33 @@ setTasksToday(todayTasks);
                     </span>
 
                     <strong>
-                        3
+                        {ongoingProjects.length}
                     </strong>
 
                 </div>
 
                 <div className={styles.card}>
 
-                    <span className={styles.label}>
-                        Météo
-                    </span>
+    <span className={styles.label}>
+        Météo de Félines
+    </span>
 
-                    <strong>
-                        ⛈️ Orage
-                    </strong>
+    {weather && (
+        <>
+            <strong>
+    {weatherCodes[weather.weathercode]?.emoji}{" "}
+    {weatherCodes[weather.weathercode]?.label}
+    {" - "}
+    {weather.temperature}°C
+</strong>
 
-                    <p>
-                        Fais gaffe à tes équipements !
-                    </p>
+            <p>
+                {getWeatherTip(weather.weathercode, weather.temperature)}
+            </p>
+        </>
+    )}
 
-                </div>
+</div>
 
             </section>
 

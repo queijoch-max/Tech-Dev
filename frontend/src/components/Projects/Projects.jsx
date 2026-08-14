@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProjectsTable from "./ProjectsTable";
 import styles from "./Projects.module.css";
+import { API_URL } from "../../config";
 
 // ==============================
 // COMPOSANT : GESTION DES PROJETS
@@ -12,75 +13,69 @@ function Projects() {
     // PROJETS
     // ==============================
 
-    const [projects, setProjects] = useState([
-        {
-            id: 1,
-            name: "Hub Dashboard",
-            description: "Dashboard personnel de gestion",
-            status: "in_progress",
-            progress: 75,
-            deadline: "2026-09-15"
-        },
-        {
-            id: 2,
-            name: "Portfolio",
-            description: "Portfolio développeuse web",
-            status: "not_started",
-            progress: 0,
-            deadline: "2026-09-30"
-        },
-        {
-            id: 3,
-            name: "Projet IA",
-            description: "Projet autour de l'intelligence artificielle",
-            status: "not_started",
-            progress: 0,
-            deadline: "2026-10-15"
-        },
-        {
-            id: 4,
-            name: "Ancien projet",
-            description: "Projet personnel terminé",
-            status: "completed",
-            progress: 100,
-            deadline: "2026-07-20"
-        }
-    ]);
+    const [projects, setProjects] = useState([]);
+
+    // ==============================
+    // CREER UN PROJET
+    // ==============================
+
+    const createProject = async (name, description, status, progress, deadline) => {
+        const response = await fetch(`${API_URL}/projects`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name, description, status, progress, deadline })
+        });
+
+        const data = await response.json();
+
+        const newProject = {
+            id: data.projectId,
+            name,
+            description,
+            status,
+            progress,
+            deadline
+        };
+        setProjects((currentProjects) => [...currentProjects, newProject]);
+    };
 
     // ==============================
     // MODIFIER UN PROJET
     // ==============================
 
-    const updateProject = (id, field, value) => {
+  const updateProject = async (id, field, value) => {
+    const currentProject = projects.find((project) => project.id === id);
+    const updatedProject = { ...currentProject, [field]: value };
 
-        setProjects((currentProjects) =>
-            currentProjects.map((project) =>
-                project.id === id
-                    ? {
-                        ...project,
-                        [field]: value
-                    }
-                    : project
-            )
-        );
-    };
+    await fetch(`${API_URL}/projects/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: updatedProject.name,
+            description: updatedProject.description,
+            status: updatedProject.status,
+            progress: updatedProject.progress,
+            deadline: updatedProject.deadline
+        })
+    });
+
+    setProjects((currentProjects) =>
+        currentProjects.map((project) =>
+            project.id === id ? updatedProject : project
+        )
+    );
+};
 
     // ==============================
     // DÉPLACER UN PROJET
     // ==============================
 
     const moveProject = (id, newStatus) => {
-
-        setProjects((currentProjects) =>
-            currentProjects.map((project) =>
-                project.id === id
-                    ? {
-                        ...project,
-                        status: newStatus
-                    }
-                    : project
-            )
-        );
+        updateProject(id, "status", newStatus);
     };
 
     const formatDateFr = (dateString) => {
@@ -88,7 +83,32 @@ function Projects() {
         return `${day}/${month}/${year}`;
     }
 
-    return (
+     // ==============================
+    // SUPPRIMER UN PROJET
+    // ==============================
+
+    const deleteProject = async (id) => {
+        await fetch(`${API_URL}/projects/${id}`, {
+            method: "DELETE"
+        });
+
+        setProjects((currentProjects) => currentProjects.filter((project) => project.id !== id));
+    };
+
+    // ==============================
+    // RÉCUPÉRER LES TÂCHES DU BACKEND
+    // ==============================
+
+    useEffect(() => {
+        fetch(`${API_URL}/projects`)
+            .then((response) => response.json())
+            .then((data) => {
+                setProjects(data.projects);
+            });
+    }, []);
+    
+     return (
+
         <section className={styles.projects}>
 
             {/* ==============================
@@ -382,6 +402,8 @@ function Projects() {
                 <ProjectsTable
                     projects={projects}
                     onUpdateProject={updateProject}
+                    onAddProject={createProject}
+                    onDeleteProject={deleteProject}
                 />
 
             </section>
