@@ -14,13 +14,6 @@
     gap: 1rem;
 }
 
-.card {
-    padding: 1.5rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-}
-
 .label {
     display: block;
     margin-bottom: 0.75rem;
