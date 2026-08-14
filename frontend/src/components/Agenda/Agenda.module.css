@@ -1,0 +1,108 @@
+.agendaPage {
+    width: 100%;
+    padding: 2rem;
+}
+
+.pageTitle {
+    margin: 0 0 1.5rem;
+
+    text-align: center;
+
+    color: #ff6a3d;
+
+    text-shadow:
+        0 0 6px rgba(255, 23, 68, 0.35);
+}
+
+.calendarHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+
+    margin-bottom: 1.5rem;
+}
+
+.calendarHeader button {
+    padding: 0.5rem 0.9rem;
+
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    color: var(--text-primary);
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.calendarHeader button:hover {
+    color: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+.calendarHeader h2 {
+    text-transform: capitalize;
+    min-width: 180px;
+    text-align: center;
+}
+
+.weekDays,
+.calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+}
+
+.weekDays {
+    margin-bottom: 0.5rem;
+
+    text-align: center;
+    font-weight: 600;
+
+    color: var(--text-secondary);
+}
+
+.calendarDay {
+    aspect-ratio: 1;
+    padding: 0.5rem;
+
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    transition: 0.2s ease;
+}
+
+/*====================
+ COULEUR DES ÉVENT
+===================== */
+
+.dayNumber {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+
+.eventRdv,
+.eventDeadline {
+    margin-top: 0.2rem;
+    padding: 0.15rem 0.4rem;
+
+    border-radius: 4px;
+
+    font-size: 0.7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.eventRdv {
+    background: rgba(255, 214, 0, 0.2);
+    color: #ffd600;
+}
+
+.eventDeadline {
+    background: rgba(255, 122, 0, 0.2);
+    color: #ff7a00;
+}
