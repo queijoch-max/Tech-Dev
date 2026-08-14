@@ -152,12 +152,27 @@ const weatherCodes = {
     45: { emoji: "🌫️", label: "Brouillard" },
     48: { emoji: "🌫️", label: "Brouillard givrant" },
     51: { emoji: "🌦️", label: "Bruine légère" },
+    53: { emoji: "🌦️", label: "Bruine" },
+    55: { emoji: "🌦️", label: "Bruine forte" },
+    56: { emoji: "🌧️", label: "Bruine verglaçante légère" },
+    57: { emoji: "🌧️", label: "Bruine verglaçante" },
     61: { emoji: "🌧️", label: "Pluie légère" },
-    63: { emoji: "🌧️", label: "Pluie modérée" },
+    63: { emoji: "🌧️", label: "Pluie" },
     65: { emoji: "🌧️", label: "Pluie forte" },
+    66: { emoji: "🌧️", label: "Pluie verglaçante légère" },
+    67: { emoji: "🌧️", label: "Pluie verglaçante" },
     71: { emoji: "🌨️", label: "Neige légère" },
-    80: { emoji: "🌦️", label: "Averses" },
-    95: { emoji: "⛈️", label: "Orage" }
+    73: { emoji: "🌨️", label: "Neige" },
+    75: { emoji: "🌨️", label: "Neige forte" },
+    77: { emoji: "🌨️", label: "Grains de neige" },
+    80: { emoji: "🌦️", label: "Averses légères" },
+    81: { emoji: "🌦️", label: "Averses" },
+    82: { emoji: "⛈️", label: "Averses violentes" },
+    85: { emoji: "🌨️", label: "Averses de neige légères" },
+    86: { emoji: "🌨️", label: "Averses de neige" },
+    95: { emoji: "⛈️", label: "Orage" },
+    96: { emoji: "⛈️", label: "Orage avec grêle légère" },
+    99: { emoji: "⛈️", label: "Orage avec grêle forte" }
 };
 
 const getWeatherTip = (weatherCode, temperature) => {
