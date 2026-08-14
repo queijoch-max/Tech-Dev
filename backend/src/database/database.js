@@ -12,4 +12,15 @@ db.exec(`
     )
 `);
 
+db.exec(`
+    CREATE TABLE IF NOT EXISTS project (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        description TEXT,
+        status TEXT NOT NULL,
+        progress INTEGER NOT NULL,
+        deadline TEXT
+    )
+`); 
+
 export default db;
