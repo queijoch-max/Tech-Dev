@@ -15,7 +15,10 @@ function AgendaTable({
     onDeleteEvent
 }) {
 
-    const [newEvent, setNewEvent] = useState("");
+   const [newTitle, setNewTitle] = useState("");
+const [newDescription, setNewDescription] = useState("");
+const [newDate, setNewDate] = useState("");
+const [newTime, setNewTime] = useState("");
 
     const generateCalendarDays = (date) => {
         const year = date.getFullYear();
@@ -47,14 +50,21 @@ function AgendaTable({
 
     const days = generateCalendarDays(currentDate);
 
-    const addEvent = () => {
-        const title = newEvent.trim();
+// ==============================
+// CRÉER UN ÉVÉNEMENT
+// ==============================
 
-        if (!title) return;
+const addEvent = () => {
+    const title = newTitle.trim();
+    if (!title || !newDate) return;
 
-        onAddEvent?.(title, "", toISODate(currentDate), "");
-        setNewEvent("");
-    };
+    onAddEvent?.(title, newDescription, newDate, newTime);
+
+    setNewTitle("");
+    setNewDescription("");
+    setNewDate("");
+    setNewTime("");
+};
 
     const handleKeyDown = (event) => {
         if (event.key === "Enter") {
@@ -63,12 +73,90 @@ function AgendaTable({
         }
     };
 
+// ==============================
+// SUPPRIMER UN ÉVÉNEMENT
+// ==============================
+
+
     const deleteEvent = (id) => {
         onDeleteEvent?.(id);
     };
 
+// ==============================
+// MODIFIER UN ÉVÉNEMENT
+// ==============================
+
+const [editingEventId, setEditingEventId] = useState(null);
+const [editTitle, setEditTitle] = useState("");
+const [editDescription, setEditDescription] = useState("");
+const [editTime, setEditTime] = useState("");
+
+const startEditingEvent = (event) => {
+    setEditingEventId(event.id);
+    setEditTitle(event.title);
+    setEditDescription(event.description || "");
+    setEditTime(event.time || "");
+};
+
+const saveEditingEvent = (event) => {
+    onUpdateEvent?.(event.id, editTitle, editDescription, event.date, editTime);
+    setEditingEventId(null);
+};
+const handleEditKeyDown = (e, event) => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        saveEditingEvent(event);
+    }
+};
+
+// ==============================
+// INFOS DE LA SEMAINE
+// ==============================
+
+const getWeekRange = () => {
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+
+    const monday = new Date(today);
+    monday.setDate(today.getDate() + diffToMonday);
+
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+
+    return { monday: toISODate(monday), sunday: toISODate(sunday) };
+};
+const { monday, sunday } = getWeekRange();
+const weekEvents = mockEvents.filter(
+    (event) => event.date >= monday && event.date <= sunday
+);
+
+const formatWeekEvent = (event) => {
+    const [year, month, day] = event.date.split("-").map(Number);
+    const eventDate = new Date(year, month - 1, day);
+    const dayName = eventDate.toLocaleDateString("fr-FR", { weekday: "long" });
+
+    if (event.type === "deadline") {
+        return `le projet ${event.title} ${dayName}`;
+    }
+
+    return event.time
+        ? `${event.title} ${dayName} à ${event.time}`
+        : `${event.title} ${dayName}`;
+};
+
+
     return (
         <div className={styles.agenda}>
+
+            <div className={styles.weekSummary}>
+                <h3>Cette semaine</h3>
+                <p>
+                    {weekEvents.length > 0
+                        ? `Tu as : ${weekEvents.map(formatWeekEvent).join(", ")}.`
+                        : "Rien de prévu cette semaine."}
+                </p>
+            </div>
 
             {/* ==============================
                 EN-TÊTE : NAVIGATION MOIS
@@ -136,6 +224,7 @@ function AgendaTable({
                                                     ? styles.eventRdv
                                                     : styles.eventDeadline
                                             }
+                                            onDoubleClick={() => startEditingEvent(event)}
                                         >
                                             <span className={styles.eventTitle}>
                                                 {event.title}
@@ -149,6 +238,15 @@ function AgendaTable({
                                                 >
                                                     ×
                                                 </button>
+                                            )}
+
+                                            {editingEventId === event.id && (
+                                               <div className={styles.editEventCard}>
+    <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} onKeyDown={(e) => handleEditKeyDown(e, event)} placeholder="Titre" />
+    <input value={editDescription} onChange={(e) => setEditDescription(e.target.value)} onKeyDown={(e) => handleEditKeyDown(e, event)} placeholder="Description" />
+    <input type="time" value={editTime} onChange={(e) => setEditTime(e.target.value)} onKeyDown={(e) => handleEditKeyDown(e, event)} />
+    <button type="button" onClick={() => saveEditingEvent(event)}>Enregistrer</button>
+</div>
                                             )}
                                         </div>
                                     ))}
@@ -168,10 +266,34 @@ function AgendaTable({
             <div className={styles.addEvent}>
                 <input
                     type="text"
-                    value={newEvent}
-                    onChange={(event) => setNewEvent(event.target.value)}
+                    value={newTitle}
+                    onChange={(event) => setNewTitle(event.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Ajouter un événement..."
+                />
+                 {/* DESCRIPTION */}
+                <input
+                    type="text"
+                    value={newDescription}
+                    onChange={(event) => setNewDescription(event.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Ajouter une description..."
+                />
+                {/* DATE */}
+                <input
+                    type="date"
+                    value={newDate}
+                    onChange={(event) => setNewDate(event.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Ajouter une date..."
+                />
+                {/* TIME */}
+                <input
+                    type="time"
+                    value={newTime}
+                    onChange={(event) => setNewTime(event.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Ajouter une heure..."
                 />
                 <button type="button" onClick={addEvent}>
                     Ajouter

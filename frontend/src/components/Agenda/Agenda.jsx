@@ -31,7 +31,8 @@ function Agenda() {
                 }
 
                 const data = await response.json();
-                setEvents(data.events);
+const eventsWithType = data.events.map((event) => ({ ...event, type: "rdv" }));
+setEvents(eventsWithType);
 
             } catch (error) {
                 console.error("Erreur réseau lors de la récupération des événements :", error);

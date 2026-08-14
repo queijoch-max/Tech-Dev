@@ -199,10 +199,86 @@ const getWeatherTip = (weatherCode, temperature) => {
     return "Profites-en pour sortir un peu de ta grotte, ta tête a besoin de respirer";
 };
 
+    // ==============================
+    // CALENDRIER
+    // ==============================
+
+const [calendarEvents, setCalendarEvents] = useState([]);
+
+useEffect(() => {
+    const fetchCalendarEvents = async () => {
+        try {
+            const [eventsResponse, projectsResponse] = await Promise.all([
+                fetch(`${API_URL}/agenda`),
+                fetch(`${API_URL}/projects`)
+            ]);
+
+            const eventsData = await eventsResponse.json();
+            const projectsData = await projectsResponse.json();
+
+            const events = eventsData.events.map((event) => ({ ...event, type: "rdv" }));
+
+            const deadlines = projectsData.projects
+                .filter((project) => project.deadline)
+                .map((project) => ({
+                    id: `project-${project.id}`,
+                    title: project.name,
+                    type: "deadline",
+                    date: project.deadline
+                }));
+
+            setCalendarEvents([...events, ...deadlines]);
+
+        } catch (error) {
+            console.error("Erreur lors de la récupération du calendrier :", error);
+        }
+    };
+
+    fetchCalendarEvents();
+
+}, []);
+
+const generateCalendarDays = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDayOfMonth = new Date(year, month, 1);
+    const lastDayOfMonth = new Date(year, month + 1, 0);
+    const daysInMonth = lastDayOfMonth.getDate();
+
+    let startWeekDay = firstDayOfMonth.getDay();
+    startWeekDay = startWeekDay === 0 ? 6 : startWeekDay - 1;
+
+    const days = [];
+    for (let i = 0; i < startWeekDay; i++) {
+        days.push(null);
+    }
+    for (let day = 1; day <= daysInMonth; day++) {
+        days.push(new Date(year, month, day));
+    }
+
+    return days;
+};
+
+const toISODate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+};
+
+const calendarDays = generateCalendarDays(new Date());
+
     return (
         <main className={styles.dashboard}>
 
-            <h1>3 août 2026</h1>
+            <h1>
+    {new Date().toLocaleDateString("fr-FR", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    })}
+</h1>
 
             {/* ==============================
                 RÉSUMÉ
@@ -268,8 +344,24 @@ const getWeatherTip = (weatherCode, temperature) => {
                 <h2>Calendrier</h2>
 
                 <div className={styles.calendarPlaceholder}>
-                    Calendrier à venir...
+    <div className={styles.miniWeekDays}>
+        <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+    </div>
+    <div className={styles.miniCalendarGrid}>
+        {calendarDays.map((day, index) => {
+            const hasEvent = day
+                ? calendarEvents.some((event) => event.date === toISODate(day))
+                : false;
+
+            return (
+                <div key={index} className={styles.miniCalendarDay}>
+                    {day && <span>{day.getDate()}</span>}
+                    {hasEvent && <span className={styles.miniDot}>•</span>}
                 </div>
+            );
+        })}
+    </div>
+</div>
 
             </section>
 
