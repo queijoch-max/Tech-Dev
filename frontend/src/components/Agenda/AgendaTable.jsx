@@ -1,10 +1,21 @@
+import { useState } from "react";
 import styles from "./Agenda.module.css";
 
 // ==============================
 // COMPOSANT : AFFICHAGE DU CALENDRIER
 // ==============================
 
-function AgendaTable({ currentDate, mockEvents, onPreviousMonth, onNextMonth }) {
+function AgendaTable({
+    currentDate,
+    mockEvents,
+    onPreviousMonth,
+    onNextMonth,
+    onAddEvent,
+    onUpdateEvent,
+    onDeleteEvent
+}) {
+
+    const [newEvent, setNewEvent] = useState("");
 
     const generateCalendarDays = (date) => {
         const year = date.getFullYear();
@@ -35,6 +46,26 @@ function AgendaTable({ currentDate, mockEvents, onPreviousMonth, onNextMonth }) 
     };
 
     const days = generateCalendarDays(currentDate);
+
+    const addEvent = () => {
+        const title = newEvent.trim();
+
+        if (!title) return;
+
+        onAddEvent?.(title, "", toISODate(currentDate), "");
+        setNewEvent("");
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            addEvent();
+        }
+    };
+
+    const deleteEvent = (id) => {
+        onDeleteEvent?.(id);
+    };
 
     return (
         <div className={styles.agenda}>
@@ -106,7 +137,19 @@ function AgendaTable({ currentDate, mockEvents, onPreviousMonth, onNextMonth }) 
                                                     : styles.eventDeadline
                                             }
                                         >
-                                            {event.title}
+                                            <span className={styles.eventTitle}>
+                                                {event.title}
+                                            </span>
+
+                                            {event.type === "rdv" && (
+                                                <button
+                                                    type="button"
+                                                    className={styles.deleteEventButton}
+                                                    onClick={() => deleteEvent(event.id)}
+                                                >
+                                                    ×
+                                                </button>
+                                            )}
                                         </div>
                                     ))}
                                 </>
@@ -116,6 +159,23 @@ function AgendaTable({ currentDate, mockEvents, onPreviousMonth, onNextMonth }) 
                     );
                 })}
 
+            </div>
+
+            {/* ==============================
+                AJOUT D'UN ÉVÉNEMENT
+                ============================== */}
+
+            <div className={styles.addEvent}>
+                <input
+                    type="text"
+                    value={newEvent}
+                    onChange={(event) => setNewEvent(event.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Ajouter un événement..."
+                />
+                <button type="button" onClick={addEvent}>
+                    Ajouter
+                </button>
             </div>
 
         </div>
