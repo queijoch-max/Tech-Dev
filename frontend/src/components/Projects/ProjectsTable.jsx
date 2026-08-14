@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styles from "./Projects.module.css";
 
 // ==============================
@@ -9,9 +10,32 @@ function ProjectsTable({
     onUpdateProject
 }) {
 
+
+const [sortBy, setSortBy] = useState("");
+const sortedProjects = [...projects].sort((a, b) => {
+    if (!sortBy) return 0;
+    return a[sortBy].localeCompare(b[sortBy]);
+});
+
     return (
         <div className={styles.projectsTable}>
 
+{/* ==============================
+                TRIER LES PROJETS
+                ============================== */}
+
+<div className={styles.sortBar}>
+    <select
+        className={styles.sortSelect}
+        value={sortBy}
+        onChange={(e) => setSortBy(e.target.value)}
+    >
+        <option value="">Trier par...</option>
+        <option value="name">Nom</option>
+        <option value="status">Statut</option>
+        <option value="deadline">Deadline</option>
+    </select>
+</div>
             {/* ==============================
                 EN-TÊTE
                 ============================== */}
@@ -20,7 +44,7 @@ function ProjectsTable({
 
                 <span>Nom du projet</span>
                 <span>Description</span>
-                <span>Status</span>
+                <span>Statuts</span>
                 <span>Progression</span>
                 <span>Deadline</span>
 
@@ -30,7 +54,7 @@ function ProjectsTable({
                 PROJETS
                 ============================== */}
 
-            {projects.map((project) => (
+            {sortedProjects.map((project) => (
 
                 <div
                     key={project.id}

@@ -1,4 +1,4 @@
-import styles from "../components/Projects/Projects.module.css"; // adapte le chemin exact
+import styles from "../components/Projects/Projects.module.css";
 import Projects from "../components/Projects/Projects";
 
 function ProjectsPage() {

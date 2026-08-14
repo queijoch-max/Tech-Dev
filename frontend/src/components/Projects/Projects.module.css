@@ -213,6 +213,44 @@
 }
 
 /* ==============================
+   TRI DU TABLEAU
+   ============================== */
+
+.sortBar {
+    display: flex;
+    padding: 1rem 1.25rem;
+}
+
+.sortSelect {
+    padding: 0.6rem 0.9rem;
+
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    box-shadow: 0 0 15px rgba(255, 23, 68, 0.25);
+
+    color: var(--text-primary);
+
+    font: inherit;
+    cursor: pointer;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+.sortSelect:hover {
+    border-color: var(--accent-red);
+    box-shadow: 0 0 15px rgba(255, 23, 68, 0.3);
+}
+
+.sortSelect:focus {
+    border-color: var(--accent-red);
+    box-shadow: 0 0 8px rgba(255, 23, 68, 0.2);
+}
+
+/* ==============================
    TABLEAU GESTION DES PROJETS
    ============================== */
 

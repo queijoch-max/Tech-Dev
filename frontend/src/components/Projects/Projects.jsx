@@ -19,7 +19,7 @@ function Projects() {
             description: "Dashboard personnel de gestion",
             status: "in_progress",
             progress: 75,
-            deadline: "15/09/2026"
+            deadline: "2026-09-15"
         },
         {
             id: 2,
@@ -27,7 +27,7 @@ function Projects() {
             description: "Portfolio développeuse web",
             status: "not_started",
             progress: 0,
-            deadline: "30/09/2026"
+            deadline: "2026-09-30"
         },
         {
             id: 3,
@@ -35,7 +35,7 @@ function Projects() {
             description: "Projet autour de l'intelligence artificielle",
             status: "not_started",
             progress: 0,
-            deadline: "15/10/2026"
+            deadline: "2026-10-15"
         },
         {
             id: 4,
@@ -43,7 +43,7 @@ function Projects() {
             description: "Projet personnel terminé",
             status: "completed",
             progress: 100,
-            deadline: "20/07/2026"
+            deadline: "2026-07-20"
         }
     ]);
 
@@ -82,6 +82,11 @@ function Projects() {
             )
         );
     };
+
+    const formatDateFr = (dateString) => {
+        const [year, month, day] = dateString.split("-");
+        return `${day}/${month}/${year}`;
+    }
 
     return (
         <section className={styles.projects}>
@@ -168,7 +173,7 @@ function Projects() {
 
                                         <small>
                                             Deadline :{" "}
-                                            {project.deadline}
+                                            {formatDateFr(project.deadline)}
                                         </small>
 
                                     </div>
@@ -268,8 +273,7 @@ function Projects() {
                                         </div>
 
                                         <small>
-                                            Deadline :{" "}
-                                            {project.deadline}
+                                            Deadline : {formatDateFr(project.deadline)}
                                         </small>
 
                                     </div>
