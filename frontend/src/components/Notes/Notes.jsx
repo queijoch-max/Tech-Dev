@@ -1,6 +1,6 @@
 import styles from "./Notes.module.css";
 import { useState, useEffect } from "react";
-import { API_URL } from "../../config";
+import { API_URL, authFetch } from "../../config";
 import Postits from "./Postits";
 
 // ==============================
@@ -21,7 +21,7 @@ function Notes() {
     useEffect(() => {
         const fetchNotes = async () => {
             try {
-                const response = await fetch(`${API_URL}/notes`);
+                const response = await authFetch(`${API_URL}/notes`);
 
                 if (!response.ok) {
                     console.error("Erreur lors de la récupération des notes :", response.status);
@@ -45,7 +45,7 @@ function Notes() {
     useEffect(() => {
         const fetchPostits = async () => {
             try {
-                const response = await fetch(`${API_URL}/notes/postits`);
+                const response = await authFetch(`${API_URL}/notes/postits`);
 
                 if (!response.ok) {
                     console.error("Erreur lors de la récupération des postits :", response.status);
@@ -71,7 +71,7 @@ function Notes() {
     // ==============================
 
     const createNote = async (contenu) => {
-        const response = await fetch(`${API_URL}/notes`, {
+        const response = await authFetch(`${API_URL}/notes`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -99,7 +99,7 @@ function Notes() {
     // ==============================
 
     const createPostit = async (contenu, color) => {
-        const response = await fetch(`${API_URL}/notes/postits`, {
+        const response = await authFetch(`${API_URL}/notes/postits`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -121,7 +121,7 @@ function Notes() {
     // ==============================
 
     const updateNote = async (contenu) => {
-        await fetch(`${API_URL}/notes/${noteId}`, {
+        await authFetch(`${API_URL}/notes/${noteId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -135,7 +135,7 @@ function Notes() {
     // ==============================
 
     const updatePostit = async (id, contenu, color) => {
-        await fetch(`${API_URL}/notes/postits/${id}`, {
+        await authFetch(`${API_URL}/notes/postits/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -155,7 +155,7 @@ function Notes() {
     // ==============================
 
     const deletePostit = async (id) => {
-        await fetch(`${API_URL}/notes/postits/${id}`, {
+        await authFetch(`${API_URL}/notes/postits/${id}`, {
             method: "DELETE"
         });
 

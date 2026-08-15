@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ProjectsTable from "./ProjectsTable";
 import styles from "./Projects.module.css";
-import { API_URL } from "../../config";
+import { API_URL, authFetch } from "../../config";
 
 // ==============================
 // COMPOSANT : GESTION DES PROJETS
@@ -20,7 +20,7 @@ function Projects() {
     // ==============================
 
     const createProject = async (name, description, status, progress, deadline) => {
-        const response = await fetch(`${API_URL}/projects`, {
+        const response = await authFetch(`${API_URL}/projects`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -49,7 +49,7 @@ function Projects() {
     const currentProject = projects.find((project) => project.id === id);
     const updatedProject = { ...currentProject, [field]: value };
 
-    await fetch(`${API_URL}/projects/${id}`, {
+    await authFetch(`${API_URL}/projects/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -88,7 +88,7 @@ function Projects() {
     // ==============================
 
     const deleteProject = async (id) => {
-        await fetch(`${API_URL}/projects/${id}`, {
+        await authFetch(`${API_URL}/projects/${id}`, {
             method: "DELETE"
         });
 
@@ -100,7 +100,7 @@ function Projects() {
     // ==============================
 
     useEffect(() => {
-        fetch(`${API_URL}/projects`)
+        authFetch(`${API_URL}/projects`)
             .then((response) => response.json())
             .then((data) => {
                 setProjects(data.projects);

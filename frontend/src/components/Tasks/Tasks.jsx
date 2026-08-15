@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import TasksTable from "./TasksTable";
 import styles from "./Tasks.module.css";
-import { API_URL } from "../../config";
+import { API_URL, authFetch } from "../../config";
 
 // ==============================
 // COMPOSANT : GESTION DES TÂCHES
@@ -26,7 +26,7 @@ function Tasks() {
     // ==============================
 
     useEffect(() => {
-        fetch(`${API_URL}/tasks`)
+        authFetch(`${API_URL}/tasks`)
             .then((response) => response.json())
             .then((data) => {
 
@@ -49,7 +49,7 @@ function Tasks() {
 
     const addTaskToday = async (title) => {
 
-        const response = await fetch(`${API_URL}/tasks`, {
+        const response = await authFetch(`${API_URL}/tasks`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -84,7 +84,7 @@ function Tasks() {
 
     const addTaskMonth = async (title) => {
 
-        const response = await fetch(`${API_URL}/tasks`, {
+        const response = await authFetch(`${API_URL}/tasks`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -124,7 +124,7 @@ function Tasks() {
 
         const newStatus = task.status === "done" ? "todo" : "done";
 
-        const response = await fetch(`${API_URL}/tasks/${id}`, {
+        const response = await authFetch(`${API_URL}/tasks/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -158,7 +158,7 @@ function Tasks() {
 
         const newStatus = task.status === "done" ? "todo" : "done";
 
-        const response = await fetch(`${API_URL}/tasks/${id}`, {
+        const response = await authFetch(`${API_URL}/tasks/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

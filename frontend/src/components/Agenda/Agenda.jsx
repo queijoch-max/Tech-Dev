@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { API_URL } from "../../config";
+import { API_URL, authFetch } from "../../config";
 import AgendaTable from "./AgendaTable";
 
 function Agenda() {
@@ -23,7 +23,7 @@ function Agenda() {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await fetch(`${API_URL}/agenda`);
+                const response = await authFetch(`${API_URL}/agenda`);
 
                 if (!response.ok) {
                     console.error("Erreur lors de la récupération des événements :", response.status);
@@ -52,7 +52,7 @@ setEvents(eventsWithType);
     useEffect(() => {
         const fetchProjectDeadlines = async () => {
             try {
-                const response = await fetch(`${API_URL}/projects`);
+                const response = await authFetch(`${API_URL}/projects`);
 
                 if (!response.ok) {
                     console.error("Erreur lors de la récupération des deadlines :", response.status);
@@ -88,7 +88,7 @@ setEvents(eventsWithType);
     // ==============================
 
     const createEvent = async (title, description, date, time) => {
-        const response = await fetch(`${API_URL}/agenda`, {
+        const response = await authFetch(`${API_URL}/agenda`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -123,7 +123,7 @@ setEvents(eventsWithType);
         const currentEvent = events.find((event) => event.id === id);
         const updatedEvent = { ...currentEvent, title, description, date, time };
 
-        await fetch(`${API_URL}/agenda/${id}`, {
+        await authFetch(`${API_URL}/agenda/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -148,7 +148,7 @@ setEvents(eventsWithType);
     // ==============================
 
     const deleteEvent = async (id) => {
-        await fetch(`${API_URL}/agenda/${id}`, {
+        await authFetch(`${API_URL}/agenda/${id}`, {
             method: "DELETE"
         });
 

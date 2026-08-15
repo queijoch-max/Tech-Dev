@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./Tasks.module.css";
-import { API_URL } from "../../config";
+import { API_URL, authFetch } from "../../config";
 
 // ==============================
 // COMPOSANT : TABLEAU DES TÂCHES
@@ -86,7 +86,7 @@ function TasksTable({
 
         try {
 
-            const response = await fetch(
+            const response = await authFetch(
                 `${API_URL}/tasks/${task.id}`,
                 {
                     method: "PUT",
@@ -175,7 +175,7 @@ function TasksTable({
 
         try {
 
-            const response = await fetch(
+            const response = await authFetch(
                 `${API_URL}/tasks/${id}`,
                 {
                     method: "DELETE"

@@ -1,7 +1,10 @@
 import { getNotes, createNote, updateNote, deleteNote, getPostits, createPostit, updatePostit, deletePostit } from "../controllers/notesController.js";
 import { Router } from "express";
+import requireAuth from "../middlewares/authMiddleware.js";
 
 const router = Router();
+
+router.use(requireAuth);
 
 router.get("/", getNotes);
 router.post("/", createNote);

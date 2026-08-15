@@ -1,15 +1,18 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
     LayoutDashboard,
     CheckSquare,
     FolderKanban,
     CalendarDays,
-    NotebookPen
+    NotebookPen,
+    LogOut
 } from "lucide-react";
 
 import styles from "./Sidebar.module.css";
 
 function Sidebar() {
+
+  const navigate = useNavigate();
 
   const menuItems = [
     {
@@ -39,6 +42,11 @@ function Sidebar() {
     }
   ];
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
     <aside className={styles.sidebar}>
     <nav>
@@ -54,6 +62,11 @@ function Sidebar() {
             <span>{item.label}</span>
         </NavLink>
     ))}
+
+    <button type="button" className={styles.logoutButton} onClick={handleLogout}>
+        <LogOut size={20} />
+        <span>Déconnexion</span>
+    </button>
 </nav>
     </aside>
   );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./Dashboard.module.css";
-import { API_URL } from "../../config";
+import { API_URL, authFetch } from "../../config";
 
 // ==============================
 // PAGE : DASHBOARD
@@ -25,7 +25,7 @@ function Dashboard() {
 
             try {
 
-                const response = await fetch(
+                const response = await authFetch(
                     `${API_URL}/tasks`
                 );
 
@@ -76,7 +76,7 @@ setTasksToday(todayTasks);
 
             try {
 
-                const response = await fetch(
+                const response = await authFetch(
                     `${API_URL}/projects`
                 );
 
@@ -209,8 +209,8 @@ useEffect(() => {
     const fetchCalendarEvents = async () => {
         try {
             const [eventsResponse, projectsResponse] = await Promise.all([
-                fetch(`${API_URL}/agenda`),
-                fetch(`${API_URL}/projects`)
+                authFetch(`${API_URL}/agenda`),
+                authFetch(`${API_URL}/projects`)
             ]);
 
             const eventsData = await eventsResponse.json();
