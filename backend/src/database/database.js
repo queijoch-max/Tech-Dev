@@ -33,4 +33,21 @@ db.exec(`
     )
 `);
 
+db.exec(`
+    CREATE TABLE IF NOT EXISTS notes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        contenu TEXT NOT NULL,
+        date_ajout TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+`);
+
+db.exec(`
+    CREATE TABLE IF NOT EXISTS postIt (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        contenu TEXT NOT NULL,
+        color TEXT NOT NULL,
+        date_ajout TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )   
+`);
+
 export default db;
