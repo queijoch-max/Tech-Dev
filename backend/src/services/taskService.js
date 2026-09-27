@@ -1,42 +1,34 @@
 import db from "../database/database.js";
 
-const getAllTasks = () => {
-    const tasks = db.prepare("SELECT * FROM task").all();
-    return tasks;
-}   
-
-const createTask = (title, description, status, period) => {
-    const result = db.prepare(`
-        INSERT INTO task (title, description, status, period) VALUES (?, ?, ?, ?)`).run(
-            title,
-            description,
-            status,
-            period
-        );
-    return result.lastInsertRowid;
+const getAllTasks = async () => {
+    const result = await db.query("SELECT * FROM task");
+    return result.rows;
 };
 
-const updateTask = (title, description, status, period, id) => {
-    const result = db.prepare(`
-        UPDATE task
-        SET title = ?, description = ?, status = ?, period = ?
-        WHERE id = ?
-    `).run(
-        title,
-        description,
-        status,
-        period,
-        id
+const createTask = async (title, description, status, period) => {
+    const result = await db.query(
+        `INSERT INTO task (title, description, status, period) VALUES ($1, $2, $3, $4) RETURNING id`,
+        [title, description, status, period]
     );
-     return result.changes;
+    return result.rows[0].id;
 };
 
-const deleteTask = (id) => {
-    const result = db.prepare(`
-        DELETE FROM task
-        WHERE id = ?
-    `).run(id);
-    return result.changes;
+const updateTask = async (title, description, status, period, id) => {
+    const result = await db.query(
+        `UPDATE task
+        SET title = $1, description = $2, status = $3, period = $4
+        WHERE id = $5`,
+        [title, description, status, period, id]
+    );
+    return result.rowCount;
+};
+
+const deleteTask = async (id) => {
+    const result = await db.query(
+        `DELETE FROM task WHERE id = $1`,
+        [id]
+    );
+    return result.rowCount;
 };
 
 export { getAllTasks, createTask, updateTask, deleteTask };

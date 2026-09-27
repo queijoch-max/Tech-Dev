@@ -1,25 +1,27 @@
 import db from "../database/database.js";
 import bcrypt from "bcrypt";
 
-const getAllUsers = () => {
-    const users = db.prepare("SELECT * FROM users").all();
-    return users;
-}
-
-const createUser = (email, password) => {
-    const hashedPassword = bcrypt.hashSync(password, 10);
-
-    const result = db.prepare(`
-        INSERT INTO users (email, password) VALUES (?, ?)`).run(
-            email,
-            hashedPassword
-        );
-    return result.lastInsertRowid;
+const getAllUsers = async () => {
+    const result = await db.query("SELECT * FROM users");
+    return result.rows;
 };
 
-const getUserByEmail = (email) => {
-    const user = db.prepare("SELECT * FROM users WHERE email = ?").get(email);
-    return user;
+const createUser = async (email, password) => {
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    const result = await db.query(
+        `INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id`,
+        [email, hashedPassword]
+    );
+    return result.rows[0].id;
+};
+
+const getUserByEmail = async (email) => {
+    const result = await db.query(
+        "SELECT * FROM users WHERE email = $1",
+        [email]
+    );
+    return result.rows[0];
 };
 
 export { getAllUsers, createUser, getUserByEmail };

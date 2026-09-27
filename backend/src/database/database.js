@@ -1,60 +1,70 @@
-import Database from "better-sqlite3";
+import pg from "pg";
 
-const db = new Database("hub.db");
+const { Pool } = pg;
 
-db.exec(`
-    CREATE TABLE IF NOT EXISTS task (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        description TEXT,
-        status TEXT NOT NULL,
-        period TEXT NOT NULL
-    )
-`);
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false }
+});
 
-db.exec(`
-    CREATE TABLE IF NOT EXISTS project (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        description TEXT,
-        status TEXT NOT NULL,
-        progress INTEGER NOT NULL,
-        deadline TEXT
-    )
-`); 
+const initDb = async () => {
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS task (
+            id SERIAL PRIMARY KEY,
+            title TEXT NOT NULL,
+            description TEXT,
+            status TEXT NOT NULL,
+            period TEXT NOT NULL
+        )
+    `);
 
-db.exec(`
-    CREATE TABLE IF NOT EXISTS event (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        description TEXT,
-        date TEXT NOT NULL,
-        time TEXT
-    )
-`);
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS project (
+            id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL,
+            description TEXT,
+            status TEXT NOT NULL,
+            progress INTEGER NOT NULL,
+            deadline TEXT
+        )
+    `);
 
-db.exec(`
-    CREATE TABLE IF NOT EXISTS notes (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        contenu TEXT NOT NULL,
-        date_ajout TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-`);
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS event (
+            id SERIAL PRIMARY KEY,
+            title TEXT NOT NULL,
+            description TEXT,
+            date TEXT NOT NULL,
+            time TEXT
+        )
+    `);
 
-db.exec(`
-    CREATE TABLE IF NOT EXISTS postIt (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        contenu TEXT NOT NULL,
-        color TEXT NOT NULL,
-        date_ajout TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )   
-`);
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS notes (
+            id SERIAL PRIMARY KEY,
+            contenu TEXT NOT NULL,
+            date_ajout TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
 
-db.exec(`
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        email TEXT NOT NULL,
-        password TEXT NOT NULL
-    )
-`);
-export default db;
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS postit (
+            id SERIAL PRIMARY KEY,
+            contenu TEXT NOT NULL,
+            color TEXT NOT NULL,
+            date_ajout TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            email TEXT NOT NULL,
+            password TEXT NOT NULL
+        )
+    `);
+};
+
+await initDb();
+
+export default pool;

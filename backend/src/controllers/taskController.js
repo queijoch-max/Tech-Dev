@@ -14,10 +14,10 @@ const getTasks = async (req, res) => {
     });
 };
 
-const addTask = (req, res) => {
+const addTask = async (req, res) => {
     const { title, description, status, period } = req.body;
 
-    const taskId = createTask(
+    const taskId = await createTask(
         title,
         description,
         status,
@@ -30,11 +30,11 @@ const addTask = (req, res) => {
     });
 };
 
-const updateTask = (req, res) => {
+const updateTask = async (req, res) => {
     const { id } = req.params;
     const { title, description, status, period } = req.body;
 
-    const result = updateTaskService(
+    const result = await updateTaskService(
         title,
         description,
         status,
@@ -48,9 +48,9 @@ const updateTask = (req, res) => {
     });
 };
 
-const deleteTask = (req, res) => {
+const deleteTask = async (req, res) => {
     const { id } = req.params;
-    const result = deleteTaskService(id);
+    const result = await deleteTaskService(id);
 
     res.json({
         message: "Tâche supprimée avec succès",

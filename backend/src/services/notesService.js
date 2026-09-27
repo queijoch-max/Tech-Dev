@@ -1,71 +1,61 @@
 import db from "../database/database.js";
 
-const getAllNotes = () => {
-    const notes = db.prepare("SELECT * FROM notes").all();
-    return notes;
-}
-
-const createNote = (contenu) => {
-    const result = db.prepare(`
-        INSERT INTO notes (contenu) VALUES (?)`).run(
-            contenu
-        );
-    return result.lastInsertRowid;
+const getAllNotes = async () => {
+    const result = await db.query("SELECT * FROM notes");
+    return result.rows;
 };
 
-const updateNote = (contenu, id) => {
-    const result = db.prepare(`
-        UPDATE notes
-        SET contenu = ?
-        WHERE id = ?
-    `).run(
-        contenu,
-        id
+const createNote = async (contenu) => {
+    const result = await db.query(
+        `INSERT INTO notes (contenu) VALUES ($1) RETURNING id`,
+        [contenu]
     );
-     return result.changes;
+    return result.rows[0].id;
 };
 
-const deleteNote = (id) => {
-    const result = db.prepare(`
-        DELETE FROM notes
-        WHERE id = ?
-    `).run(id);
-    return result.changes;
-};
-
-const getAllPostits = () => {
-    const postits = db.prepare("SELECT * FROM postIt").all();
-    return postits;
-}
-
-const createPostit = (contenu, color) => {
-    const result = db.prepare(`
-        INSERT INTO postIt (contenu, color) VALUES (?, ?)`).run(
-            contenu,
-            color
-        );
-    return result.lastInsertRowid;
-};
-
-const updatePostit = (contenu, color, id) => {
-    const result = db.prepare(`
-        UPDATE postIt
-        SET contenu = ?, color = ?
-        WHERE id = ?
-    `).run(
-        contenu,
-        color,
-        id
+const updateNote = async (contenu, id) => {
+    const result = await db.query(
+        `UPDATE notes SET contenu = $1 WHERE id = $2`,
+        [contenu, id]
     );
-     return result.changes;
+    return result.rowCount;
 };
 
-const deletePostit = (id) => {
-    const result = db.prepare(`
-        DELETE FROM postIt
-        WHERE id = ?
-    `).run(id);
-    return result.changes;
-};  
+const deleteNote = async (id) => {
+    const result = await db.query(
+        `DELETE FROM notes WHERE id = $1`,
+        [id]
+    );
+    return result.rowCount;
+};
+
+const getAllPostits = async () => {
+    const result = await db.query("SELECT * FROM postit");
+    return result.rows;
+};
+
+const createPostit = async (contenu, color) => {
+    const result = await db.query(
+        `INSERT INTO postit (contenu, color) VALUES ($1, $2) RETURNING id`,
+        [contenu, color]
+    );
+    return result.rows[0].id;
+};
+
+const updatePostit = async (contenu, color, id) => {
+    const result = await db.query(
+        `UPDATE postit SET contenu = $1, color = $2 WHERE id = $3`,
+        [contenu, color, id]
+    );
+    return result.rowCount;
+};
+
+const deletePostit = async (id) => {
+    const result = await db.query(
+        `DELETE FROM postit WHERE id = $1`,
+        [id]
+    );
+    return result.rowCount;
+};
 
 export { getAllNotes, createNote, updateNote, deleteNote, getAllPostits, createPostit, updatePostit, deletePostit };
