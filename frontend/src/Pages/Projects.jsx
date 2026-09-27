@@ -1,6 +1,10 @@
 import styles from "../components/Projects/Projects.module.css";
 import Projects from "../components/Projects/Projects";
 
+// ==============================
+// PAGE : PROJETS
+// ==============================
+
 function ProjectsPage() {
     return (
         <main className={styles.projectsPage}>
